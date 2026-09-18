@@ -1,0 +1,74 @@
+{
+  "name": "local-mod-manager",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "搭配 XXMI 等模组加载器使用的本地模组管理器（仅供学习交流，禁止商用）",
+  "license": "PolyForm-Noncommercial-1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/singhzero/local-mod-manager.git"
+  },
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "vite",
+    "dev:app": "concurrently -k -s first \"vite\" \"wait-on tcp:127.0.0.1:5173 && electron .\"",
+    "build": "vite build",
+    "dist": "vite build && electron-builder --win nsis",
+    "dist:dir": "vite build && electron-builder --win --dir",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.5.13"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.2.0",
+    "@vitejs/plugin-vue": "^6.0.0",
+    "concurrently": "^10.0.5",
+    "electron": "^44.0.0",
+    "electron-builder": "^26.15.3",
+    "jimp": "^0.22.12",
+    "vite": "^7.0.0",
+    "wait-on": "^9.1.0"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "electron@44.0.0": true
+  },
+  "build": {
+    "appId": "com.localmod.manager",
+    "productName": "Local Mod Manager",
+    "directories": {
+      "output": "release",
+      "buildResources": "build"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "vendor/7zip",
+        "to": "vendor/7zip"
+      }
+    ],
+    "asar": true,
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "portable": {
+      "artifactName": "Local-Mod-Manager-Portable-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "language": "2052",
+      "artifactName": "Local-Mod-Manager-Setup-${version}.${ext}"
+    }
+  }
+}
